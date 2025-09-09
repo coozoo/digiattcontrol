@@ -1,0 +1,40 @@
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QSerialPort>
+#include <QObject>
+#include <QWidget>
+#include <QMainWindow>
+#include <QSerialPortInfo>
+#include <QDateTime>
+#include "serialportinterface.h"
+
+QT_BEGIN_NAMESPACE
+namespace Ui {
+class MainWindow;
+}
+QT_END_NAMESPACE
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+
+private:
+    Ui::MainWindow *ui;
+    void updateDeviceList();
+    SerialPortInterface *serialPortPowerMeter;
+
+private slots:
+    void ondevice_comboBox_currentIndexChanged();
+    void updateData(QString data);
+    void on_connect_pushButton_clicked();
+    void on_disconnect_pushButton_clicked();
+    void on_refreshDevices_toolbutton_clicked();
+    void on_serialPortError(QString error);
+    void on_set_pushButton_clicked();
+};
+#endif // MAINWINDOW_H
