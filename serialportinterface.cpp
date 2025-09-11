@@ -80,11 +80,14 @@ void SerialPortInterface::serialError(
     QSerialPort::SerialPortError serialPortError)
 {
     qDebug() << "serialError";
-    if (serialPortError == QSerialPort::ReadError)
+    if (serialPortError == QSerialPort::ReadError
+        || serialPortError == QSerialPort::ResourceError
+        || serialPortError == QSerialPort::DeviceNotFoundError)
     {
         emit serialPortErrorSignal("Error " + m_serialPort->portName() + " " +
                                    m_serialPort->errorString());
         qDebug()<<m_serialPort->portName()<<m_serialPort->errorString();
+        stopPort();
     }
 }
 

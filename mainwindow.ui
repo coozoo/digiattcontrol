@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>804</width>
-    <height>604</height>
+    <width>806</width>
+    <height>606</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,7 +85,7 @@
                      <double>0.250000000000000</double>
                     </property>
                     <property name="stepType">
-                     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+                     <enum>QAbstractSpinBox::StepType::AdaptiveDecimalStepType</enum>
                     </property>
                    </widget>
                   </item>
@@ -185,13 +185,6 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QCheckBox" name="simulate_checkBox">
-          <property name="text">
-           <string>Simulate</string>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
      </layout>
@@ -206,7 +199,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>804</width>
+     <width>806</width>
      <height>24</height>
     </rect>
    </property>
