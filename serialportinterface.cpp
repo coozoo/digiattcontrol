@@ -72,6 +72,10 @@ void SerialPortInterface::readData()
 
 void SerialPortInterface::writeData(const QByteArray &data)
 {
+    if(!m_serialPort->isOpen()) {
+        qWarning() << "Port not open. Skipping write.";
+        return;
+    }
     qDebug()<<"writedata: "<<data;
     m_serialPort->write(data);
 }
