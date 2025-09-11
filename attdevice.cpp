@@ -18,6 +18,14 @@
 // -read data: "READ\r\n"
 // -response: "ATT = -31.75"
 
+// model: LF-6GHZ-120DB
+// baudrate: 9600(115200 usb no need to be set)
+// step: 0.25
+// max: 124.75
+// -set: "att-000.00\r\n"
+// -response: "attOK"
+// -read data: "READ\r\n"
+// -response: "ATT = -31.75"
 
 // there is such similar devices I'm not sure how to identify them
 // I found some descriptions of their comunication
