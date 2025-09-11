@@ -18,7 +18,25 @@
 // -read data: "READ\r\n"
 // -response: "ATT = -31.75"
 
-// model: LF-6GHZ-120DB
+// model: DC-3G-90DB-V2
+// baudrate: 9600(115200 usb no need to be set)
+// step: 0.5
+// max: 94.5
+// -set: "att-000.00\r\n"
+// -response: "attOK"
+// -read data: "READ\r\n"
+// -response: "ATT = -31.75"
+
+// model: DC-8GHZ-30DB-0.1DB
+// baudrate: 9600(115200 usb no need to be set)
+// step: 0.1
+// max: 30
+// -set: "att-00.00\r\n"
+// -response: "attOK"
+// -read data: "READ\r\n"
+// -response: "ATT = -30.00"
+
+// model: DC-6GHZ-120DB
 // baudrate: 9600(115200 usb no need to be set)
 // step: 0.25
 // max: 124.75
@@ -35,9 +53,6 @@
 // ATT-6000
 // "wv03125\r\n"
 
-// ?????
-// LF-6GHZ-120DB
-// -set: "att-000.00\r\n"
 
 
 AttDevice::AttDevice(QObject *parent) : QObject{parent}
