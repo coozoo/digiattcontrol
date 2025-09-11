@@ -9,6 +9,15 @@
 // -read data: "READ\r\n"
 // -response: "ATT = -31.75"
 
+// model: DC-6GHZ-90DB-V3
+// baudrate: 9600(115200 usb no need to be set)
+// step: 0.25
+// max: 95.25
+// -set: "att-000.00\r\n"
+// -response: "attOK"
+// -read data: "READ\r\n"
+// -response: "ATT = -31.75"
+
 
 // there is such similar devices I'm not sure how to identify them
 // I found some descriptions of their comunication
