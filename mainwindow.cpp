@@ -53,6 +53,7 @@ void MainWindow::on_connect_pushButton_clicked()
     {
         serialPortPowerMeter->setportName(ui->device_comboBox->currentData().toString());
         serialPortPowerMeter->setbaudRate(115200);
+        serialPortPowerMeter->startPort();
 
         //Q_EMIT(on_set_pushButton_clicked());
         updateDeviceList();
@@ -81,9 +82,10 @@ void MainWindow::updateDeviceList()
     const auto infos = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : infos)
     {
-        qDebug()<<info.hasVendorIdentifier() <<QString::number(info.vendorIdentifier());
+
         if(info.hasVendorIdentifier() && QString::number(info.vendorIdentifier(),16)=="483")
         {
+            qDebug()<<info.hasVendorIdentifier() <<QString::number(info.vendorIdentifier());
             QString busyText;
             QSerialPort serialPort(info);
             if (!serialPort.open(QIODevice::ReadWrite)) {
