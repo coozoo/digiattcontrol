@@ -9,11 +9,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     updateDeviceList();
-    serialPortPowerMeter= new SerialPortInterface();
+    serialPortPowerMeter= new AttDevice();
     Q_EMIT(ondevice_comboBox_currentIndexChanged());
     connect(ui->device_comboBox, &QComboBox::currentTextChanged, this, &MainWindow::ondevice_comboBox_currentIndexChanged);
-    connect(serialPortPowerMeter,&SerialPortInterface::serialPortNewData,this,&MainWindow::updateData);
-    connect(serialPortPowerMeter,&SerialPortInterface::serialPortErrorSignal,this,&MainWindow::on_serialPortError);
+    connect(serialPortPowerMeter,&AttDevice::serialPortNewData,this,&MainWindow::updateData);
+    connect(serialPortPowerMeter,&AttDevice::serialPortErrorSignal,this,&MainWindow::on_serialPortError);
 
 
 }
@@ -53,7 +53,7 @@ void MainWindow::on_connect_pushButton_clicked()
     {
         serialPortPowerMeter->setportName(ui->device_comboBox->currentData().toString());
         serialPortPowerMeter->setbaudRate(115200);
-        serialPortPowerMeter->startPort();
+
         //Q_EMIT(on_set_pushButton_clicked());
         updateDeviceList();
     }

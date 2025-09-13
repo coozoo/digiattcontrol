@@ -65,6 +65,7 @@ signals:
     void portName_changed();
     void baudRate_changed();
     void serialPortErrorSignal(QString line);
+    void portOpened();
 
 private slots:
     void onPortName_changed();

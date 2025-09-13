@@ -33,6 +33,7 @@ void SerialPortInterface::startPort()
     {
         qDebug() << "failed to open";
     }
+    emit portOpened();
 }
 
 void SerialPortInterface::stopPort()

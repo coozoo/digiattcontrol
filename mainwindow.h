@@ -8,6 +8,7 @@
 #include <QSerialPortInfo>
 #include <QDateTime>
 #include "serialportinterface.h"
+#include "attdevice.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,7 +27,7 @@ public:
 private:
     Ui::MainWindow *ui;
     void updateDeviceList();
-    SerialPortInterface *serialPortPowerMeter;
+    AttDevice *serialPortPowerMeter;
 
 private slots:
     void ondevice_comboBox_currentIndexChanged();
