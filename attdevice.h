@@ -5,14 +5,16 @@
 #include <QString>
 #include <QTimer>
 
-struct DeviceType {
+struct DeviceType
+{
     QString model;
     double step;
     double max;
     QString format;
 };
 
-static const DeviceType deviceTypes[] = {
+static const DeviceType deviceTypes[] =
+{
     { "DC-6GHZ-120DB",       0.25, 124.75,  "att-%06.2f\r\n" },
     { "DC-6GHZ-90DB-V3",     0.25,  95.25,  "att-%06.2f\r\n" },
     { "DC-3G-90DB-V2",       0.5,   94.5,   "att-%06.2f\r\n" },
@@ -24,10 +26,10 @@ class AttDevice : public SerialPortInterface
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString model      READ model      NOTIFY modelChanged)
-    Q_PROPERTY(double  step       READ step       NOTIFY stepChanged)
-    Q_PROPERTY(double  max        READ max        NOTIFY maxChanged)
-    Q_PROPERTY(QString format     READ format     NOTIFY formatChanged)
+    Q_PROPERTY(QString model      READ model      WRITE setModel      NOTIFY modelChanged)
+    Q_PROPERTY(double  step       READ step       WRITE setStep       NOTIFY stepChanged)
+    Q_PROPERTY(double  max        READ max        WRITE setMax        NOTIFY maxChanged)
+    Q_PROPERTY(QString format     READ format     WRITE setFormat     NOTIFY formatChanged)
     Q_PROPERTY(double currentValue   READ currentValue                  NOTIFY currentValueChanged)
     Q_PROPERTY(double expectedValue  READ expectedValue WRITE setExpectedValue NOTIFY expectedValueChanged)
 
@@ -41,6 +43,10 @@ public:
     double currentValue() const;
     double expectedValue() const;
 
+    void setModel(const QString &model);
+    void setStep(double step);
+    void setMax(double max);
+    void setFormat(const QString &format);
     void setExpectedValue(double value);
 
     Q_INVOKABLE void probeDeviceType();
@@ -66,7 +72,8 @@ private slots:
     void onProbeTimeout();
 
 private:
-    enum ProbeState {
+    enum ProbeState
+    {
         ProbeIdle,
         ProbeWaitingSetOK,
         ProbeWaitingReadOK,
@@ -82,7 +89,7 @@ private:
     double  m_max          = 100.0;
     QString m_format       = "att-%05.2f\r\n";
     double  m_currentValue = 0.0;
-    double  m_expectedValue= 0.0;
+    double  m_expectedValue = 0.0;
 
     int     m_probeTypeIdx = 0;
     double  m_probeValue   = 0.0;

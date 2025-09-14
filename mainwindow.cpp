@@ -9,12 +9,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     updateDeviceList();
-    serialPortPowerMeter= new AttDevice();
+    serialAttenuator= new AttDevice();
     Q_EMIT(ondevice_comboBox_currentIndexChanged());
     connect(ui->device_comboBox, &QComboBox::currentTextChanged, this, &MainWindow::ondevice_comboBox_currentIndexChanged);
-    connect(serialPortPowerMeter,&AttDevice::serialPortNewData,this,&MainWindow::updateData);
-    connect(serialPortPowerMeter,&AttDevice::serialPortErrorSignal,this,&MainWindow::on_serialPortError);
-
+    connect(serialAttenuator,&AttDevice::serialPortNewData,this,&MainWindow::updateData);
+    connect(serialAttenuator,&AttDevice::serialPortErrorSignal,this,&MainWindow::on_serialPortError);
+    connect(serialAttenuator,&AttDevice::currentValueChanged,this,&MainWindow::on_currentAttenuation_changed);
 
 }
 
@@ -51,9 +51,9 @@ void MainWindow::on_connect_pushButton_clicked()
 
     if(!ui->device_comboBox->currentData().toString().isEmpty())
     {
-        serialPortPowerMeter->setportName(ui->device_comboBox->currentData().toString());
-        serialPortPowerMeter->setbaudRate(115200);
-        serialPortPowerMeter->startPort();
+        serialAttenuator->setportName(ui->device_comboBox->currentData().toString());
+        serialAttenuator->setbaudRate(115200);
+        serialAttenuator->startPort();
 
         //Q_EMIT(on_set_pushButton_clicked());
        updateDeviceList();
@@ -64,7 +64,7 @@ void MainWindow::on_connect_pushButton_clicked()
 void MainWindow::on_disconnect_pushButton_clicked()
 {
     qDebug()<<"on_disconnect_pushButton_clicked";
-    serialPortPowerMeter->stopPort();
+    serialAttenuator->stopPort();
     updateDeviceList();
 
 }
@@ -117,17 +117,28 @@ void MainWindow::on_serialPortError(QString error)
     Q_EMIT(ondevice_comboBox_currentIndexChanged());
 }
 
+void MainWindow::on_send_pushButton_clicked()
+{
+    qDebug()<<"on_set_pushButton_clicked";
+    serialAttenuator->writeData((ui->write_data->text()+QString("\r\n")).toLatin1());
+}
+
 void MainWindow::on_set_pushButton_clicked()
 {
     qDebug()<<"on_set_pushButton_clicked";
-   // setFrequency(QString::number(ui->frequency_spinBox->value(),'d',0).rightJustified(4, '0'));
+    qDebug()<<ui->attenuation_doubleSpinBox->value();
+    serialAttenuator->writeValue(ui->attenuation_doubleSpinBox->value());
+    //setFrequency(QString::number(ui->frequency_spinBox->value(),'d',0).rightJustified(4, '0'));
     //if(ui->correctionplus_radioButton->isChecked())
     //{
     //setOffset(QString(ui->correctionplus_radioButton->isChecked()?"+":"-")+QString::number(ui->offset_doubleSpinBox->value(),'f',1).rightJustified(4, '0'));
     //}
     //serialPortPowerMeter->writeData(QString("wv01150\n").toLatin1());
-    serialPortPowerMeter->writeData((ui->write_data->text()+QString("\r\n")).toLatin1());
+    // serialAttenuator->writeData((ui->write_data->text()+QString("\r\n")).toLatin1());
 }
 
 
-
+void MainWindow::on_currentAttenuation_changed(double value)
+{
+    ui->currentattenuation_lcdNumber->display(value);
+}

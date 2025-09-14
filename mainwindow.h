@@ -27,7 +27,7 @@ public:
 private:
     Ui::MainWindow *ui;
     void updateDeviceList();
-    AttDevice *serialPortPowerMeter;
+    AttDevice *serialAttenuator;
 
 private slots:
     void ondevice_comboBox_currentIndexChanged();
@@ -37,5 +37,7 @@ private slots:
     void on_refreshDevices_toolbutton_clicked();
     void on_serialPortError(QString error);
     void on_set_pushButton_clicked();
+    void on_send_pushButton_clicked();
+    void on_currentAttenuation_changed(double value);
 };
 #endif // MAINWINDOW_H

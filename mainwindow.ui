@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>808</width>
-    <height>608</height>
+    <width>812</width>
+    <height>612</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,7 +41,7 @@
               </widget>
              </item>
              <item row="1" column="2">
-              <widget class="QPushButton" name="set_pushButton">
+              <widget class="QPushButton" name="send_pushButton">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
                  <horstretch>0</horstretch>
@@ -49,7 +49,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Set</string>
+                <string>Send</string>
                </property>
               </widget>
              </item>
@@ -62,7 +62,7 @@
                 <item row="0" column="0">
                  <layout class="QGridLayout" name="gridLayout_15">
                   <item row="0" column="1" rowspan="2">
-                   <widget class="QDoubleSpinBox" name="offset_doubleSpinBox">
+                   <widget class="QDoubleSpinBox" name="attenuation_doubleSpinBox">
                     <property name="minimumSize">
                      <size>
                       <width>0</width>
@@ -101,6 +101,13 @@
                </layout>
               </widget>
              </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="set_pushButton">
+               <property name="text">
+                <string>Set</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
           </layout>
@@ -121,7 +128,7 @@
                </property>
                <layout class="QGridLayout" name="gridLayout_9">
                 <item row="0" column="0">
-                 <widget class="QLCDNumber" name="dbm_lcdNumber">
+                 <widget class="QLCDNumber" name="currentattenuation_lcdNumber">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
                     <horstretch>0</horstretch>
@@ -199,7 +206,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>808</width>
+     <width>812</width>
      <height>24</height>
     </rect>
    </property>
