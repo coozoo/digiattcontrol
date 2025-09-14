@@ -56,6 +56,7 @@ private:
     QSerialPort *m_serialPort = nullptr;
     QByteArray m_readData;
     QByteArray key16;
+    QByteArray m_lineBuffer;
 
 
 signals:

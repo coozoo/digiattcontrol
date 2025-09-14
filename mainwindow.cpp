@@ -56,7 +56,7 @@ void MainWindow::on_connect_pushButton_clicked()
         serialPortPowerMeter->startPort();
 
         //Q_EMIT(on_set_pushButton_clicked());
-        updateDeviceList();
+       updateDeviceList();
     }
 
 }
