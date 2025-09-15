@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(serialAttenuator,&AttDevice::serialPortNewData,this,&MainWindow::updateData);
     connect(serialAttenuator,&AttDevice::serialPortErrorSignal,this,&MainWindow::on_serialPortError);
     connect(serialAttenuator,&AttDevice::currentValueChanged,this,&MainWindow::on_currentAttenuation_changed);
+    connect(serialAttenuator,&AttDevice::detectedDevice,this,&MainWindow::ondetectedDevice);
+    connect(ui->attenuation_doubleSpinBox,&QDoubleSpinBox::valueChanged,this,&MainWindow::onattenuation_doubleSpinBox_valueChanged);
 
 }
 
@@ -74,6 +76,7 @@ void MainWindow::on_disconnect_pushButton_clicked()
 {
     qDebug()<<"on_disconnect_pushButton_clicked";
     serialAttenuator->stopPort();
+    ui->model_lineEdit->setText("");
     updateDeviceList();
 
 }
@@ -137,13 +140,6 @@ void MainWindow::on_set_pushButton_clicked()
     qDebug()<<"on_set_pushButton_clicked";
     qDebug()<<ui->attenuation_doubleSpinBox->value();
     serialAttenuator->writeValue(ui->attenuation_doubleSpinBox->value());
-    //setFrequency(QString::number(ui->frequency_spinBox->value(),'d',0).rightJustified(4, '0'));
-    //if(ui->correctionplus_radioButton->isChecked())
-    //{
-    //setOffset(QString(ui->correctionplus_radioButton->isChecked()?"+":"-")+QString::number(ui->offset_doubleSpinBox->value(),'f',1).rightJustified(4, '0'));
-    //}
-    //serialPortPowerMeter->writeData(QString("wv01150\n").toLatin1());
-    // serialAttenuator->writeData((ui->write_data->text()+QString("\r\n")).toLatin1());
 }
 
 
@@ -153,8 +149,17 @@ void MainWindow::on_currentAttenuation_changed(double value)
     ui->currentattenuation_lcdNumber->display(value);
 }
 
-void MainWindow::on_attenuation_doubleSpinBox_valueChanged(double value)
+void MainWindow::onattenuation_doubleSpinBox_valueChanged(double value)
 {
     qDebug() << Q_FUNC_INFO<<value;
     attenuation_doubleSpinBox_debounceTimer->start(400);
+}
+
+void MainWindow::ondetectedDevice(const QString &model, double step, double max, const QString &format)
+{
+    qDebug() << Q_FUNC_INFO<<model<<step<<max<<format;
+    ui->model_lineEdit->setText(model);
+    disconnect(ui->attenuation_doubleSpinBox,&QDoubleSpinBox::valueChanged,this,&MainWindow::onattenuation_doubleSpinBox_valueChanged);
+    ui->attenuation_doubleSpinBox->setValue(serialAttenuator->currentValue());
+    connect(ui->attenuation_doubleSpinBox,&QDoubleSpinBox::valueChanged,this,&MainWindow::onattenuation_doubleSpinBox_valueChanged);
 }

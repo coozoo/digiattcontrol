@@ -74,8 +74,6 @@ double AttDevice::expectedValue() const { return m_expectedValue; }
 
 void AttDevice::setModel(const QString &model)
 {
-    if (m_model == model)
-        return;
     m_model = model;
     emit modelChanged(m_model);
 }
@@ -199,6 +197,7 @@ void AttDevice::finishProbe(bool found)
             setModel(dev.model);
             setStep(dev.step);
             setMax(dev.max);
+            setCurrentValue(dev.max);
             setFormat(dev.format);
             emit detectedDevice(m_model, m_step, m_max, m_format);
         }
