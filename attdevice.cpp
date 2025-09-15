@@ -65,60 +65,6 @@ AttDevice::AttDevice(QObject *parent)
     m_probeTimer.setSingleShot(true);
 }
 
-QString AttDevice::model() const { return m_model; }
-double AttDevice::step() const { return m_step; }
-double AttDevice::max() const { return m_max; }
-QString AttDevice::format() const { return m_format; }
-double AttDevice::currentValue() const { return m_currentValue; }
-double AttDevice::expectedValue() const { return m_expectedValue; }
-
-void AttDevice::setModel(const QString &model)
-{
-    m_model = model;
-    emit modelChanged(m_model);
-}
-
-void AttDevice::setStep(double step)
-{
-    if (qFuzzyCompare(m_step, step))
-        return;
-    m_step = step;
-    emit stepChanged(m_step);
-}
-
-void AttDevice::setMax(double max)
-{
-    if (qFuzzyCompare(m_max, max))
-        return;
-    m_max = max;
-    emit maxChanged(m_max);
-}
-
-void AttDevice::setFormat(const QString &format)
-{
-    if (m_format == format)
-        return;
-    m_format = format;
-    emit formatChanged(m_format);
-}
-
-void AttDevice::setCurrentValue(double value)
-{
-    if (!qFuzzyCompare(m_currentValue, value))
-        {
-            m_currentValue = value;
-            emit currentValueChanged(value);
-        }
-}
-
-void AttDevice::setExpectedValue(double value)
-{
-    qDebug() << Q_FUNC_INFO << value;
-    if (qFuzzyCompare(m_expectedValue, value)) return;
-    m_expectedValue = value;
-    emit expectedValueChanged(value);
-}
-
 void AttDevice::writeValue(double value)
 {
     qDebug() << Q_FUNC_INFO << value << "format:" << m_format;

@@ -106,7 +106,7 @@ void MainWindow::updateDeviceList()
                 serialPort.close();
                 busyText = "";
             }
-            QString s = tr("Port: ") + info.portName() +
+            QString s = info.portName() +
                         tr(" (") + info.systemLocation() +
                         tr(") ") + info.description() +
                         tr(" ") + info.manufacturer() +

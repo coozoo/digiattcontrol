@@ -13,13 +13,16 @@ struct DeviceType
     QString format;
 };
 
+// the key for device identification is max value
+// the order is important
+// so they probed from the max until succefull read
 static const DeviceType deviceTypes[] =
 {
     { "DC-6GHZ-120DB",       0.25, 124.75,  "att-%06.2f\r\n" },
     { "DC-6GHZ-90DB-V3",     0.25,  95.25,  "att-%06.2f\r\n" },
     { "DC-3G-90DB-V2",       0.5,   94.5,   "att-%06.2f\r\n" },
-    { "DC-8GHZ-30DB-0.1DB",  0.1,   30.0,   "att-%05.2f\r\n" },
-    { "DC-6GHZ-30DB",        0.25,  31.75,  "att-%05.2f\r\n" }
+    { "DC-6GHZ-30DB",        0.25,  31.75,  "att-%05.2f\r\n" },
+    { "DC-8GHZ-30DB-0.1DB",  0.1,   30.0,   "att-%05.2f\r\n" }
 };
 
 class AttDevice : public SerialPortInterface
@@ -36,19 +39,57 @@ class AttDevice : public SerialPortInterface
 public:
     explicit AttDevice(QObject *parent = nullptr);
 
-    QString model() const;
-    double step() const;
-    double max() const;
-    QString format() const;
-    double currentValue() const;
-    double expectedValue() const;
+    QString model() const { return m_model; }
+    void setModel(const QString &model)
+    {
+        m_model = model;
+        emit modelChanged(m_model);
+    }
 
-    void setModel(const QString &model);
-    void setStep(double step);
-    void setMax(double max);
-    void setFormat(const QString &format);
-    void setExpectedValue(double value);
-    void setCurrentValue(double value);
+    double step() const { return m_step; }
+    void setStep(double step)
+    {
+        if (qFuzzyCompare(m_step, step))
+            return;
+        m_step = step;
+        emit stepChanged(m_step);
+    }
+
+    double max() const { return m_max; }
+    void setMax(double max)
+    {
+        if (qFuzzyCompare(m_max, max))
+            return;
+        m_max = max;
+        emit maxChanged(m_max);
+    }
+
+    QString format() const { return m_format; }
+    void setFormat(const QString &format)
+    {
+        if (m_format == format)
+            return;
+        m_format = format;
+        emit formatChanged(m_format);
+    }
+
+    double currentValue() const { return m_currentValue; }
+    void setCurrentValue(double value)
+    {
+        if (!qFuzzyCompare(m_currentValue, value))
+        {
+            m_currentValue = value;
+            emit currentValueChanged(value);
+        }
+    }
+
+    double expectedValue() const { return m_expectedValue; }
+    void setExpectedValue(double value)
+    {
+        if (qFuzzyCompare(m_expectedValue, value)) return;
+        m_expectedValue = value;
+        emit expectedValueChanged(value);
+    }
 
     Q_INVOKABLE void probeDeviceType();
     Q_INVOKABLE void readValue();
