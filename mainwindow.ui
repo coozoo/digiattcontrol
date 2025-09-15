@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>812</width>
-    <height>612</height>
+    <width>814</width>
+    <height>614</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,146 +17,7 @@
    <layout class="QGridLayout" name="gridLayout_18">
     <item row="0" column="1">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="1">
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title">
-           <string>Set</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_8">
-           <item row="0" column="2">
-            <layout class="QGridLayout" name="gridLayout_14">
-             <item row="0" column="2">
-              <widget class="QLineEdit" name="write_data">
-               <property name="text">
-                <string>att-11.25</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
-              <widget class="QPushButton" name="send_pushButton">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Send</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QGroupBox" name="groupBox_7">
-               <property name="title">
-                <string>Attenuator</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_13">
-                <item row="0" column="0">
-                 <layout class="QGridLayout" name="gridLayout_15">
-                  <item row="0" column="1" rowspan="2">
-                   <widget class="QDoubleSpinBox" name="attenuation_doubleSpinBox">
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="prefix">
-                     <string>-</string>
-                    </property>
-                    <property name="suffix">
-                     <string/>
-                    </property>
-                    <property name="decimals">
-                     <number>2</number>
-                    </property>
-                    <property name="maximum">
-                     <double>31.750000000000000</double>
-                    </property>
-                    <property name="singleStep">
-                     <double>0.250000000000000</double>
-                    </property>
-                    <property name="stepType">
-                     <enum>QAbstractSpinBox::StepType::AdaptiveDecimalStepType</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="2" rowspan="2">
-                   <widget class="QLabel" name="label_7">
-                    <property name="text">
-                     <string>dB</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QPushButton" name="set_pushButton">
-               <property name="text">
-                <string>Set</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QGroupBox" name="groupBox">
-          <property name="title">
-           <string>Current</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_7">
-           <item row="0" column="0">
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <widget class="QGroupBox" name="groupBox_3">
-               <property name="title">
-                <string>dB</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_9">
-                <item row="0" column="0">
-                 <widget class="QLCDNumber" name="currentattenuation_lcdNumber">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>80</height>
-                   </size>
-                  </property>
-                  <property name="digitCount">
-                   <number>6</number>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="0">
+      <item row="0" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QComboBox" name="device_comboBox">
@@ -194,10 +55,184 @@
         </item>
        </layout>
       </item>
+      <item row="2" column="1">
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="2" column="0">
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Current</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_7">
+           <item row="0" column="0">
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QGroupBox" name="groupBox_3">
+               <property name="title">
+                <string>dB</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_9">
+                <item row="0" column="0">
+                 <widget class="QLCDNumber" name="currentattenuation_lcdNumber">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>80</height>
+                   </size>
+                  </property>
+                  <property name="smallDecimalPoint">
+                   <bool>false</bool>
+                  </property>
+                  <property name="digitCount">
+                   <number>6</number>
+                  </property>
+                  <property name="segmentStyle">
+                   <enum>QLCDNumber::SegmentStyle::Filled</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="model_lineEdit">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Model:</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="1">
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title">
+           <string>Set</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="1" column="2">
+            <layout class="QGridLayout" name="gridLayout_14">
+             <item row="0" column="1">
+              <widget class="QGroupBox" name="groupBox_7">
+               <property name="title">
+                <string>Attenuator</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_13">
+                <item row="0" column="0">
+                 <layout class="QGridLayout" name="gridLayout_15">
+                  <item row="1" column="3" rowspan="2">
+                   <layout class="QHBoxLayout" name="horizontalLayout_2">
+                    <item>
+                     <widget class="QCheckBox" name="autoset_checkBox">
+                      <property name="text">
+                       <string>autoset</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="set_pushButton">
+                      <property name="text">
+                       <string>Set</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="1" column="2" rowspan="2">
+                   <widget class="QLabel" name="label_7">
+                    <property name="text">
+                     <string>dB</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1" rowspan="2">
+                   <widget class="QDoubleSpinBox" name="attenuation_doubleSpinBox">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="prefix">
+                     <string>-</string>
+                    </property>
+                    <property name="suffix">
+                     <string/>
+                    </property>
+                    <property name="decimals">
+                     <number>2</number>
+                    </property>
+                    <property name="maximum">
+                     <double>200.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.250000000000000</double>
+                    </property>
+                    <property name="stepType">
+                     <enum>QAbstractSpinBox::StepType::AdaptiveDecimalStepType</enum>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="5" column="1">
+       <widget class="QPushButton" name="send_pushButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="write_data">
+        <property name="text">
+         <string>att-11.25</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QPlainTextEdit" name="data_plainTextEdit"/>
+      </item>
      </layout>
-    </item>
-    <item row="1" column="1">
-     <widget class="QPlainTextEdit" name="data_plainTextEdit"/>
     </item>
    </layout>
   </widget>
@@ -206,7 +241,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>812</width>
+     <width>814</width>
      <height>24</height>
     </rect>
    </property>

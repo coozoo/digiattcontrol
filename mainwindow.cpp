@@ -7,7 +7,16 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    ui->currentattenuation_lcdNumber->setSegmentStyle(QLCDNumber::Flat );
+    ui->currentattenuation_lcdNumber->setStyleSheet("QLCDNumber{ background-color: green; color: yellow;}");
+    attenuation_doubleSpinBox_debounceTimer = new QTimer(this);
+    attenuation_doubleSpinBox_debounceTimer->setSingleShot(true);
+    connect(attenuation_doubleSpinBox_debounceTimer, &QTimer::timeout, this, [this]() {
+        if(ui->autoset_checkBox->isChecked())
+        {
+            serialAttenuator->writeValue(ui->attenuation_doubleSpinBox->value());
+        }
+    });
     updateDeviceList();
     serialAttenuator= new AttDevice();
     Q_EMIT(ondevice_comboBox_currentIndexChanged());
@@ -91,7 +100,7 @@ void MainWindow::updateDeviceList()
             if (!serialPort.open(QIODevice::ReadWrite)) {
                 busyText = tr(" [Busy]");
             } else {
-                serialPort.close(); // Close immediately if opened
+                serialPort.close();
                 busyText = "";
             }
             QString s = tr("Port: ") + info.portName() +
@@ -140,5 +149,12 @@ void MainWindow::on_set_pushButton_clicked()
 
 void MainWindow::on_currentAttenuation_changed(double value)
 {
+    qDebug() << Q_FUNC_INFO<<value;
     ui->currentattenuation_lcdNumber->display(value);
+}
+
+void MainWindow::on_attenuation_doubleSpinBox_valueChanged(double value)
+{
+    qDebug() << Q_FUNC_INFO<<value;
+    attenuation_doubleSpinBox_debounceTimer->start(400);
 }

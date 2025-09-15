@@ -1,4 +1,4 @@
-// model: DC-6GHZ-30DB
+// model: DC-6GHZ-30DBpp
 // baudrate: 9600(115200 usb no need to be set)
 // step: 0.25
 // max: 31.75
@@ -104,6 +104,15 @@ void AttDevice::setFormat(const QString &format)
     emit formatChanged(m_format);
 }
 
+void AttDevice::setCurrentValue(double value)
+{
+    if (!qFuzzyCompare(m_currentValue, value))
+        {
+            m_currentValue = value;
+            emit currentValueChanged(value);
+        }
+}
+
 void AttDevice::setExpectedValue(double value)
 {
     qDebug() << Q_FUNC_INFO << value;
@@ -118,6 +127,7 @@ void AttDevice::writeValue(double value)
     QString cmd = QString::asprintf(m_format.toStdString().c_str(), value);
     qDebug() << "final command:" << cmd;
     writeData(cmd.toUtf8());
+    m_probeState = ProbeWaitingSetOK;
 }
 
 void AttDevice::readValue()
@@ -164,9 +174,8 @@ void AttDevice::tryCurrentProbe()
     const DeviceType &dev = deviceTypes[m_probeTypeIdx];
     setFormat(dev.format);
     m_probeValue = dev.max;
-    writeValue(m_probeValue); // logs set command
-    m_probeState = ProbeWaitingSetOK;
-    m_probeTimer.start(1000); // adjust timeout as needed
+    writeValue(m_probeValue);
+    m_probeTimer.start(1000);
 }
 
 void AttDevice::onProbeTimeout()
@@ -201,60 +210,82 @@ void AttDevice::finishProbe(bool found)
 
 void AttDevice::onSerialPortNewData(QString line)
 {
-    qDebug() << Q_FUNC_INFO << line;
-    QString trimmed = line.trimmed();
-    QRegularExpression re("ATT\\s*=\\s*-?([0-9]+\\.[0-9]+)", QRegularExpression::CaseInsensitiveOption);
-    auto match = re.match(trimmed);
+    static QString buffer;
+    buffer += line;
 
-    if (m_inProbe)
+    QRegularExpression re(R"(attOK|ATT\s*=\s*-?\d+\.\d+)", QRegularExpression::CaseInsensitiveOption);
+    QRegularExpressionMatchIterator it = re.globalMatch(buffer);
+
+    int lastEnd = 0;
+    while (it.hasNext())
         {
+            QRegularExpressionMatch fullMatch = it.next();
+            QString message = fullMatch.captured(0);
+            lastEnd = fullMatch.capturedEnd();
+
+            qDebug() << Q_FUNC_INFO << message;
+            QString trimmed = message.trimmed();
+            QRegularExpression valueRe("ATT\\s*=\\s*-?([0-9]+\\.[0-9]+)", QRegularExpression::CaseInsensitiveOption);
+            auto match = valueRe.match(trimmed);
+
             if (m_probeState == ProbeWaitingSetOK && trimmed.compare("attOK", Qt::CaseInsensitive) == 0)
                 {
                     m_probeState = ProbeWaitingValue;
                     readValue();
-                    m_probeTimer.start(1000);
-                    return;
+                    continue;
                 }
             if (m_probeState == ProbeWaitingValue && match.hasMatch())
                 {
                     double val = match.captured(1).toDouble();
-                    qDebug() << "PROBE: val=" << val << "m_probeValue=" << m_probeValue
-                             << "compare=" << qFuzzyCompare(val + 1, m_probeValue + 1);
-                    if (qFuzzyCompare(val + 1, m_probeValue + 1))
+                    if (m_inProbe)
                         {
-                            finishProbe(true);
-                            return;
+                            qDebug() << "PROBE: val=" << val << "m_probeValue=" << m_probeValue
+                                     << "compare=" << qFuzzyCompare(val + 1, m_probeValue + 1);
+                            if (qFuzzyCompare(val + 1, m_probeValue + 1))
+                                {
+                                    emit currentValueChanged(val);
+                                    finishProbe(true);
+                                    m_probeState = ProbeIdle;
+                                    continue;
+                                }
+                            else
+                                {
+                                    m_probeTypeIdx++;
+                                    tryCurrentProbe();
+                                    continue;
+                                }
                         }
                     else
                         {
-                            m_probeTypeIdx++;
-                            tryCurrentProbe();
-                            return;
+                            m_currentValue = val;
+                            emit currentValueChanged(val);
+                            if (qFuzzyCompare(m_expectedValue + 1, val + 1))
+                                emit valueMatched();
+                            else
+                                emit valueMismatched(m_expectedValue, val);
+                            m_probeState = ProbeIdle;
+                            continue;
                         }
                 }
-            // Ignore any other lines during probe
-            return;
-        }
 
-    // Normal operation
-    if (trimmed.compare("attOK", Qt::CaseInsensitive) == 0) return;
-
-    if (match.hasMatch())
-        {
-            double val = match.captured(1).toDouble();
-            if (!qFuzzyCompare(m_currentValue, val))
+            if (m_probeState == ProbeIdle && match.hasMatch())
                 {
-                    m_currentValue = val;
-                    emit currentValueChanged(val);
-                    if (qFuzzyCompare(m_expectedValue + 1, val + 1))
+                    double val = match.captured(1).toDouble();
+                    if (!qFuzzyCompare(m_currentValue, val))
                         {
-                            emit valueMatched();
+                            m_currentValue = val;
+                            emit currentValueChanged(val);
+                            if (qFuzzyCompare(m_expectedValue + 1, val + 1))
+                                emit valueMatched();
+                            else
+                                emit valueMismatched(m_expectedValue, val);
                         }
-                    else
-                        {
-                            emit valueMismatched(m_expectedValue, val);
-                        }
+                    continue;
                 }
-            return;
         }
+
+    buffer = buffer.mid(lastEnd);
+
+    if (buffer.length() > 4096)
+        buffer.clear();
 }

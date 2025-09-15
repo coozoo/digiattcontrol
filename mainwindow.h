@@ -28,6 +28,7 @@ private:
     Ui::MainWindow *ui;
     void updateDeviceList();
     AttDevice *serialAttenuator;
+    QTimer *attenuation_doubleSpinBox_debounceTimer;
 
 private slots:
     void ondevice_comboBox_currentIndexChanged();
@@ -36,6 +37,7 @@ private slots:
     void on_disconnect_pushButton_clicked();
     void on_refreshDevices_toolbutton_clicked();
     void on_serialPortError(QString error);
+    void on_attenuation_doubleSpinBox_valueChanged(double value);
     void on_set_pushButton_clicked();
     void on_send_pushButton_clicked();
     void on_currentAttenuation_changed(double value);

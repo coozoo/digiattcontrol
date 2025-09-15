@@ -48,6 +48,7 @@ public:
     void setMax(double max);
     void setFormat(const QString &format);
     void setExpectedValue(double value);
+    void setCurrentValue(double value);
 
     Q_INVOKABLE void probeDeviceType();
     Q_INVOKABLE void readValue();
@@ -76,7 +77,6 @@ private:
     {
         ProbeIdle,
         ProbeWaitingSetOK,
-        ProbeWaitingReadOK,
         ProbeWaitingValue
     };
 
