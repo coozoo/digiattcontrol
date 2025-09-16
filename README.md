@@ -4,6 +4,11 @@
 
 ## Supported Devices
 
+Device looks like this
+
+<img width="1000" height="1000" alt="image" src="https://github.com/user-attachments/assets/9e80430d-48e9-46fd-9a0a-7f5667c377d5" />
+
+
 The following digital attenuator models are supported:
 
 - **DC-6GHZ-120DB**
