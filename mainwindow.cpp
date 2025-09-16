@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->currentattenuation_lcdNumber->setSegmentStyle(QLCDNumber::Flat );
+    ondeviceConsole_pushButton_clicked();
     ui->currentattenuation_lcdNumber->setStyleSheet("QLCDNumber{ background-color: green; color: yellow;}");
     attenuation_doubleSpinBox_debounceTimer = new QTimer(this);
     attenuation_doubleSpinBox_debounceTimer->setSingleShot(true);
@@ -29,7 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->attenuation_doubleSpinBox,&QDoubleSpinBox::valueChanged,this,&MainWindow::onattenuation_doubleSpinBox_valueChanged);
     connect(ui->deviceConsole_pushButton,&QPushButton::clicked,this,&MainWindow::ondeviceConsole_pushButton_clicked);
     connect(serialAttenuator,&AttDevice::valueSetStatus,this,&MainWindow::ondeviceSetStatus);
-    ondeviceConsole_pushButton_clicked();
+    adjustSize();
+
 }
 
 MainWindow::~MainWindow()
