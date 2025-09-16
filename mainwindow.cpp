@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
     updateDeviceList();
+    ui->statusSet_label->setAlignment(Qt::AlignCenter);
     serialAttenuator= new AttDevice();
     Q_EMIT(ondevice_comboBox_currentIndexChanged());
     connect(ui->device_comboBox, &QComboBox::currentTextChanged, this, &MainWindow::ondevice_comboBox_currentIndexChanged);
@@ -26,7 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(serialAttenuator,&AttDevice::currentValueChanged,this,&MainWindow::on_currentAttenuation_changed);
     connect(serialAttenuator,&AttDevice::detectedDevice,this,&MainWindow::ondetectedDevice);
     connect(ui->attenuation_doubleSpinBox,&QDoubleSpinBox::valueChanged,this,&MainWindow::onattenuation_doubleSpinBox_valueChanged);
-
+    connect(ui->deviceConsole_pushButton,&QPushButton::clicked,this,&MainWindow::ondeviceConsole_pushButton_clicked);
+    connect(serialAttenuator,&AttDevice::valueSetStatus,this,&MainWindow::ondeviceSetStatus);
+    ondeviceConsole_pushButton_clicked();
 }
 
 MainWindow::~MainWindow()
@@ -107,8 +110,6 @@ void MainWindow::updateDeviceList()
                 busyText = "";
             }
             QString s = info.portName() +
-                        tr(" (") + info.systemLocation() +
-                        tr(") ") + info.description() +
                         tr(" ") + info.manufacturer() +
                         tr(" ") + info.serialNumber() +
                         tr(" (") + (info.hasVendorIdentifier() ? QString::number(info.vendorIdentifier(), 16) : QString()) +
@@ -162,4 +163,35 @@ void MainWindow::ondetectedDevice(const QString &model, double step, double max,
     disconnect(ui->attenuation_doubleSpinBox,&QDoubleSpinBox::valueChanged,this,&MainWindow::onattenuation_doubleSpinBox_valueChanged);
     ui->attenuation_doubleSpinBox->setValue(serialAttenuator->currentValue());
     connect(ui->attenuation_doubleSpinBox,&QDoubleSpinBox::valueChanged,this,&MainWindow::onattenuation_doubleSpinBox_valueChanged);
+}
+
+void MainWindow::ondeviceConsole_pushButton_clicked()
+{
+    qDebug() << Q_FUNC_INFO;
+    if(ui->deviceConsole_pushButton->isChecked())
+    {
+        ui->deviceConsole_groupBox->setVisible(true);
+        ui->deviceConsole_pushButton->setText(tr("Hide Device Console"));
+    }
+    else
+    {
+        ui->deviceConsole_groupBox->setVisible(false);
+        ui->deviceConsole_pushButton->setText(tr("Show Device Console"));
+    }
+}
+
+void MainWindow::ondeviceSetStatus(bool status)
+{
+    qDebug() << Q_FUNC_INFO<<status;
+    if(status)
+    {
+        ui->statusSet_label->setText("OK");
+        ui->statusSet_label->setStyleSheet("QLabel { background-color: #4CAF50; color: white; border-radius: 10px; padding: 3px 9px; font-weight: bold; }");
+    }
+    else
+    {
+        ui->statusSet_label->setText("ERROR");
+        ui->statusSet_label->setStyleSheet("QLabel { background-color: #F44336; color: white; border-radius: 10px; padding: 3px 9px; font-weight: bold; }");
+    }
+
 }

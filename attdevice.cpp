@@ -1,56 +1,3 @@
-// model: DC-6GHZ-30DBpp
-// baudrate: 9600(115200 usb no need to be set)
-// step: 0.25
-// max: 31.75
-// -set: "att-00.00\r\n"
-// -response: "attOK"
-// -read data: "READ\r\n"
-// -response: "ATT = -31.75"
-
-// model: DC-6GHZ-90DB-V3
-// baudrate: 9600(115200 usb no need to be set)
-// step: 0.25
-// max: 95.25
-// -set: "att-000.00\r\n"
-// -response: "attOK"
-// -read data: "READ\r\n"
-// -response: "ATT = -31.75"
-
-// model: DC-3G-90DB-V2
-// baudrate: 9600(115200 usb no need to be set)
-// step: 0.5
-// max: 94.5
-// -set: "att-000.00\r\n"
-// -response: "attOK"
-// -read data: "READ\r\n"
-// -response: "ATT = -31.75"
-
-// model: DC-8GHZ-30DB-0.1DB
-// baudrate: 9600(115200 usb no need to be set)
-// step: 0.1
-// max: 30
-// -set: "att-00.00\r\n"
-// -response: "attOK"
-// -read data: "READ\r\n"
-// -response: "ATT = -30.00"
-
-// model: DC-6GHZ-120DB
-// baudrate: 9600(115200 usb no need to be set)
-// step: 0.25
-// max: 124.75
-// -set: "att-000.00\r\n"
-// -response: "attOK"
-// -read data: "READ\r\n"
-// -response: "ATT = -31.75"
-
-// there is such similar devices I'm not sure how to identify them
-// I found some descriptions of their comunication
-// but in fact I'm not sure about that
-// it's possible to implement them only when own such device
-// ??????
-// ATT-6000
-// "wv03125\r\n"
-
 #include "attdevice.h"
 #include <QRegularExpression>
 #include <QDebug>
@@ -70,6 +17,7 @@ void AttDevice::writeValue(double value)
     qDebug() << Q_FUNC_INFO << value << "format:" << m_format;
     QString cmd = QString::asprintf(m_format.toStdString().c_str(), value);
     qDebug() << "final command:" << cmd;
+    setExpectedValue(value);
     writeData(cmd.toUtf8());
     m_probeState = ProbeWaitingSetOK;
 }
@@ -83,7 +31,7 @@ void AttDevice::readValue()
 void AttDevice::onExpectedValueChanged(double value)
 {
     qDebug() << Q_FUNC_INFO << value;
-    writeValue(value);
+    //writeValue(value);
 }
 
 void AttDevice::onDevicePort_started()
@@ -146,6 +94,7 @@ void AttDevice::finishProbe(bool found)
             setCurrentValue(dev.max);
             setFormat(dev.format);
             emit detectedDevice(m_model, m_step, m_max, m_format);
+            emit valueSetStatus(true);
         }
     else
         {
@@ -205,9 +154,15 @@ void AttDevice::onSerialPortNewData(QString line)
                             m_currentValue = val;
                             emit currentValueChanged(val);
                             if (qFuzzyCompare(m_expectedValue + 1, val + 1))
+                            {
                                 emit valueMatched();
+                                emit valueSetStatus(true);
+                            }
                             else
+                            {
                                 emit valueMismatched(m_expectedValue, val);
+                                emit valueSetStatus(false);
+                            }
                             m_probeState = ProbeIdle;
                             continue;
                         }
@@ -221,9 +176,15 @@ void AttDevice::onSerialPortNewData(QString line)
                             m_currentValue = val;
                             emit currentValueChanged(val);
                             if (qFuzzyCompare(m_expectedValue + 1, val + 1))
+                            {
                                 emit valueMatched();
+                                emit valueSetStatus(true);
+                            }
                             else
+                            {
                                 emit valueMismatched(m_expectedValue, val);
+                                emit valueSetStatus(false);
+                            }
                         }
                     continue;
                 }
