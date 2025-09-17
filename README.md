@@ -14,23 +14,23 @@ The following digital attenuator models are supported:
 - **DC-6GHZ-120DB**
   - Step: 0.25 dB
   - Max: 124.75 dB
-  - Format: `att-%06.2f\r\n`
+  - Format: `att-000.00\r\n`
 - **DC-6GHZ-90DB-V3**
   - Step: 0.25 dB
   - Max: 95.25 dB
-  - Format: `att-%06.2f\r\n`
+  - Format: `att-000.00\r\n`
 - **DC-3G-90DB-V2**
   - Step: 0.5 dB
   - Max: 94.5 dB
-  - Format: `att-%06.2f\r\n`
+  - Format: `att-000.00\r\n`
 - **DC-6GHZ-30DB**
   - Step: 0.25 dB
   - Max: 31.75 dB
-  - Format: `att-%05.2f\r\n`
+  - Format: `att-00.00\r\n`
 - **DC-8GHZ-30DB-0.1DB**
   - Step: 0.1 dB
   - Max: 30.0 dB
-  - Format: `att-%05.2f\r\n`
+  - Format: `att-00.00\r\n`
 
 ## Features
 

@@ -60,24 +60,41 @@
 #include <QString>
 #include <QTimer>
 
+enum class AttFormat {
+    Format000_00, // "att-%06.2f\r\n"
+    Format00_00,  // "att-%05.2f\r\n"
+    Unknown
+};
+inline QString formatToString(AttFormat fmt) {
+    switch(fmt) {
+    case AttFormat::Format000_00: return "att-%06.2f\r\n";
+    case AttFormat::Format00_00:  return "att-%05.2f\r\n";
+    default:                      return "";
+    }
+}
+inline AttFormat stringToFormat(const QString &fmt) {
+    if (fmt == "att-%06.2f\r\n") return AttFormat::Format000_00;
+    if (fmt == "att-%05.2f\r\n") return AttFormat::Format00_00;
+    return AttFormat::Unknown;
+}
+
 struct DeviceType
 {
     QString model;
     double step;
     double max;
-    QString format;
+    AttFormat format;
 };
 
 // the key for device identification is max value
 // the order is important
 // so they probed from the max until succefull read
-static const DeviceType deviceTypes[] =
-{
-    { "DC-6GHZ-120DB",       0.25, 124.75,  "att-%06.2f\r\n" },
-    { "DC-6GHZ-90DB-V3",     0.25,  95.25,  "att-%06.2f\r\n" },
-    { "DC-3G-90DB-V2",       0.5,   94.5,   "att-%06.2f\r\n" },
-    { "DC-6GHZ-30DB",        0.25,  31.75,  "att-%05.2f\r\n" },
-    { "DC-8GHZ-30DB-0.1DB",  0.1,   30.0,   "att-%05.2f\r\n" }
+static const DeviceType deviceTypes[] = {
+    { "DC-6GHZ-120DB",       0.25, 124.75,  AttFormat::Format000_00 },
+    { "DC-6GHZ-90DB-V3",     0.25, 95.25,   AttFormat::Format000_00 },
+    { "DC-3G-90DB-V2",       0.5,  94.5,    AttFormat::Format000_00 },
+    { "DC-6GHZ-30DB",        0.25, 31.75,   AttFormat::Format00_00 },
+    { "DC-8GHZ-30DB-0.1DB",  0.1,  30.0,    AttFormat::Format00_00 }
 };
 
 class AttDevice : public SerialPortInterface
@@ -119,13 +136,13 @@ public:
         emit maxChanged(m_max);
     }
 
-    QString format() const { return m_format; }
-    void setFormat(const QString &format)
+    QString format() const { return formatToString(m_format); }
+    void setFormat(const QString &fmt)
     {
-        if (m_format == format)
-            return;
-        m_format = format;
-        emit formatChanged(m_format);
+        AttFormat newFmt = stringToFormat(fmt);
+        if (m_format == newFmt) return;
+        m_format = newFmt;
+        emit formatChanged(formatToString(m_format));
     }
 
     double currentValue() const { return m_currentValue; }
@@ -184,7 +201,7 @@ private:
     QString m_model;
     double  m_step         = 0.05;
     double  m_max          = 100.0;
-    QString m_format       = "att-%05.2f\r\n";
+    AttFormat m_format = AttFormat::Format00_00;
     double  m_currentValue = 0.0;
     double  m_expectedValue = 0.0;
 

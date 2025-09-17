@@ -14,8 +14,8 @@ AttDevice::AttDevice(QObject *parent)
 
 void AttDevice::writeValue(double value)
 {
-    qDebug() << Q_FUNC_INFO << value << "format:" << m_format;
-    QString cmd = QString::asprintf(m_format.toStdString().c_str(), value);
+    qDebug() << Q_FUNC_INFO << value << "format:" << formatToString(m_format);
+    QString cmd = QString::asprintf(formatToString(m_format).toStdString().c_str(), value);
     qDebug() << "final command:" << cmd;
     setExpectedValue(value);
     writeData(cmd.toUtf8());
@@ -64,7 +64,7 @@ void AttDevice::tryCurrentProbe()
             return;
         }
     const DeviceType &dev = deviceTypes[m_probeTypeIdx];
-    setFormat(dev.format);
+    setFormat(formatToString(dev.format));
     m_probeValue = dev.max;
     writeValue(m_probeValue);
     m_probeTimer.start(1000);
@@ -87,13 +87,13 @@ void AttDevice::finishProbe(bool found)
     if (found)
         {
             const DeviceType &dev = deviceTypes[m_probeTypeIdx];
-            qDebug() << "finishProbe: model=" << dev.model << "format=" << dev.format;
+            qDebug() << "finishProbe: model=" << dev.model << "format=" << formatToString(dev.format);
             setModel(dev.model);
             setStep(dev.step);
             setMax(dev.max);
             setCurrentValue(dev.max);
-            setFormat(dev.format);
-            emit detectedDevice(m_model, m_step, m_max, m_format);
+            setFormat(formatToString(dev.format));
+            emit detectedDevice(m_model, m_step, m_max, formatToString(m_format));
             emit valueSetStatus(true);
         }
     else
