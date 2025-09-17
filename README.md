@@ -31,6 +31,8 @@ The following digital attenuator models are supported:
   - Step: 0.1 dB
   - Max: 30.0 dB
   - Format: `att-00.00\r\n`
+  
+Current value for all of the devices can be requested with ```READ\r\n```
 
 ## Features
 

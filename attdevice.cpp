@@ -68,7 +68,7 @@ void AttDevice::tryUnknownFormat()
         setMax(100.0);
         m_probeValue = 8.5;
         writeValue(m_probeValue);
-        emit detectedDevice(model()+" "+QString::asprintf(formatToString(m_format).toStdString().c_str(), 0), step(), max(), format());
+
         m_unknownFormatTimer.start(1000);
         m_unknownFormatIdx++;
     } else {
@@ -180,6 +180,12 @@ void AttDevice::onSerialPortNewData(QString line)
                             {
                                 emit valueMatched();
                                 emit valueSetStatus(true);
+                                if (m_probeTypeIdx == ProbeUnknown)
+                                {
+                                    m_unknownFormatTimer.stop();
+                                    m_probeTypeIdx=ProbeIdle;
+                                    emit detectedDevice(model()+" "+QString::asprintf(formatToString(m_format).toStdString().c_str(), 0), step(), max(), format());
+                                }
                             }
                             else
                             {

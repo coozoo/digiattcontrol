@@ -111,7 +111,7 @@ class AttDevice : public SerialPortInterface
 public:
     explicit AttDevice(QObject *parent = nullptr);
 
-    QString model() const { return m_model; }
+    const QString& model() const { return m_model; }
     void setModel(const QString &model)
     {
         m_model = model;
@@ -185,7 +185,7 @@ private slots:
     void onExpectedValueChanged(double value);
     void onDevicePort_started();
     void onProbeTimeout();
-    void tryNextUnknownFormat();
+    void tryUnknownFormat();
 
 private:
     enum ProbeState
