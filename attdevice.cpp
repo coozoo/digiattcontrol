@@ -9,7 +9,10 @@ AttDevice::AttDevice(QObject *parent)
     connect(this, &AttDevice::expectedValueChanged, this, &AttDevice::onExpectedValueChanged);
     connect(this, &SerialPortInterface::portOpened, this, &AttDevice::onDevicePort_started);
     connect(&m_probeTimer, &QTimer::timeout, this, &AttDevice::onProbeTimeout);
+    connect(this, &AttDevice::unknownDevice, this, &AttDevice::tryUnknownFormat);
+    connect(&m_unknownFormatTimer, &QTimer::timeout, this, &AttDevice::tryUnknownFormat);
     m_probeTimer.setSingleShot(true);
+    m_unknownFormatTimer.setSingleShot(true);
 }
 
 void AttDevice::writeValue(double value)
@@ -49,9 +52,29 @@ void AttDevice::probeDeviceType()
 void AttDevice::startProbe()
 {
     qDebug() << Q_FUNC_INFO;
+    m_unknownFormatIdx = 0;
     m_probeTypeIdx = 0;
     m_inProbe = true;
     tryCurrentProbe();
+}
+
+void AttDevice::tryUnknownFormat()
+{
+    m_probeTypeIdx=AttDevice::ProbeUnknown;
+    if (m_unknownFormatIdx < int(AttFormat::Unknown)) {
+        setFormat(formatToString(static_cast<AttFormat>(m_unknownFormatIdx)));
+        setModel("Unknown Device");
+        setStep(0.25);
+        setMax(100.0);
+        m_probeValue = 8.5;
+        writeValue(m_probeValue);
+        emit detectedDevice(model()+" "+QString::asprintf(formatToString(m_format).toStdString().c_str(), 0), step(), max(), format());
+        m_unknownFormatTimer.start(1000);
+        m_unknownFormatIdx++;
+    } else {
+        m_unknownFormatTimer.stop();
+        emit detectedDevice("Unsupported Device", step(), max(), format());
+    }
 }
 
 void AttDevice::tryCurrentProbe()

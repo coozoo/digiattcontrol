@@ -185,11 +185,13 @@ private slots:
     void onExpectedValueChanged(double value);
     void onDevicePort_started();
     void onProbeTimeout();
+    void tryNextUnknownFormat();
 
 private:
     enum ProbeState
     {
         ProbeIdle,
+        ProbeUnknown,
         ProbeWaitingSetOK,
         ProbeWaitingValue
     };
@@ -210,6 +212,8 @@ private:
     ProbeState m_probeState = ProbeIdle;
     QTimer  m_probeTimer;
     bool    m_inProbe      = false;
+    int m_unknownFormatIdx = 0;
+    QTimer m_unknownFormatTimer;
 };
 
 #endif // ATTDEVICE_H
