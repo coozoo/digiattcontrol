@@ -5,7 +5,7 @@
 #include <QDateTime>
 #include <QLoggingCategory>
 
-const QString APP_VERSION = "0.02";
+const QString APP_VERSION = "0.03";
 
 void qtLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 #endif
 #endif
     a.setProperty("appversion", APP_VERSION + platform);
-    a.setProperty("appname", "QT RF Power Meter");
+    a.setProperty("appname", "QT Digital Attenuator Control");
     QLoggingCategory::setFilterRules("*.debug=true\nqt.*.debug=false");
     MainWindow w;
     w.setWindowTitle(a.property("appname").toString() + " " + a.property("appversion").toString());
