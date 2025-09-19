@@ -1,6 +1,7 @@
 # digiattcontrol
 
 **digiattcontrol** is a Qt-based tool for controlling digital Chinese RF attenuator devices via a serial port. It provides a cross-platform GUI and API for setting and reading attenuation values, as well as automatic device type detection so all devices suppored by one app.
+
 It was created becuse I need widet type like to integrate it with RF power metere and default crappy dotnet app is hosted only on baidu where you need to have personalized account in order to download it sure it's not good to share your private data with chinese service even and more for each device you need separate app.
 
 <img width="762" height="290" alt="image" src="https://github.com/user-attachments/assets/a1c70af4-8e43-45df-94b9-c98bba6b2c2f" />
