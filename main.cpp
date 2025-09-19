@@ -51,6 +51,9 @@ int main(int argc, char *argv[])
 #endif
     a.setProperty("appversion", APP_VERSION + platform);
     a.setProperty("appname", "QT Digital Attenuator Control");
+#ifdef Q_OS_LINUX
+    a.setWindowIcon(QIcon(":/images/digiattcontrol.svg"));
+#endif
     QLoggingCategory::setFilterRules("*.debug=true\nqt.*.debug=false");
     MainWindow w;
     w.setWindowTitle(a.property("appname").toString() + " " + a.property("appversion").toString());

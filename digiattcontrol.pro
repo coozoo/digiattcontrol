@@ -14,17 +14,23 @@ SOURCES += \
     attdevice.cpp \
     main.cpp \
     mainwindow.cpp \
+    qtdigitalattenuator.cpp \
     serialportinterface.cpp
 
 HEADERS += \
     attdevice.h \
     mainwindow.h \
+    qtdigitalattenuator.h \
     serialportinterface.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    qtdigitalattenuator.ui
 
 # Default rules for deployment.
 # qnx: target.path = /tmp/$${TARGET}/bin
 # else: unix:!android: target.path = /opt/$${TARGET}/bin
 # !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc

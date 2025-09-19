@@ -7,6 +7,8 @@
 #include <QMainWindow>
 #include <QSerialPortInfo>
 #include <QDateTime>
+#include <QDebug>
+#include "qtdigitalattenuator.h"
 #include "serialportinterface.h"
 #include "attdevice.h"
 
@@ -23,26 +25,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    QtDigitalAttenuator *widget;
 
 private:
     Ui::MainWindow *ui;
-    void updateDeviceList();
-    AttDevice *serialAttenuator;
-    QTimer *attenuation_doubleSpinBox_debounceTimer;
 
-private slots:
-    void ondevice_comboBox_currentIndexChanged();
-    void updateData(QString data);
-    void on_connect_pushButton_clicked();
-    void on_disconnect_pushButton_clicked();
-    void on_refreshDevices_toolbutton_clicked();
-    void on_serialPortError(QString error);
-    void onattenuation_doubleSpinBox_valueChanged(double value);
-    void on_set_pushButton_clicked();
-    void on_send_pushButton_clicked();
-    void on_currentAttenuation_changed(double value);
-    void ondetectedDevice(const QString &model, double step, double max, const QString &format);
-    void ondeviceConsole_pushButton_clicked();
-    void ondeviceSetStatus(bool status);
 };
 #endif // MAINWINDOW_H
